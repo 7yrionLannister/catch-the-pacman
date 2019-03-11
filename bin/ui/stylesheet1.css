@@ -1,0 +1,6 @@
+Circle, Pacman{
+    -fx-fill: yellow;
+    -fx-stroke-width: 5.0;
+    -fx-stroke: black;
+    -fx-type: ROUND;
+}

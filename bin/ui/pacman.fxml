@@ -2,10 +2,13 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Arc?>
 
-
-<BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PacmanController">
+<BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="789.0" stylesheets="@stylesheet1.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PacmanController">
    <center>
-      <Pane prefHeight="446.0" prefWidth="632.0" BorderPane.alignment="CENTER" />
+      <Pane fx:id="gameArea" prefHeight="446.0" prefWidth="632.0" BorderPane.alignment="CENTER">
+         <children>
+            <Arc fill="DODGERBLUE" layoutX="246.0" layoutY="234.0" length="270.0" radiusX="100.0" radiusY="100.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+         </children></Pane>
    </center>
 </BorderPane>
