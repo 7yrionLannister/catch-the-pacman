@@ -1,59 +1,88 @@
 package ui;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.stage.Stage;
 import model.Pacman;
+import threads.PacmanThread;
+
 
 public class PacmanController {
 
-    @FXML
-    private BorderPane window;
-    
-    @FXML
-    private Pane gameArea;
-    
-    @FXML
-    public void initialize() {
-    	MenuBar bar = new MenuBar();
-    	
-    	Menu file = new Menu("File");
-    	MenuItem load = new MenuItem("Load game");
-    	MenuItem save = new MenuItem("Save game");
-    	MenuItem exit = new MenuItem("Exit");
-    	
-    	file.getItems().addAll(load, save, new SeparatorMenuItem(), exit);
-    	
-    	Menu view = new Menu("View");
-    	MenuItem leaderBoard = new MenuItem("Leader board");
-    	MenuItem instructions = new MenuItem("How to play");
-    	view.getItems().addAll(leaderBoard, new SeparatorMenuItem(), instructions);
-    	
-    	bar.getMenus().addAll(file, view);file.addEventHandler(ActionEvent.ACTION , new MenuItemSelected());
-    	window.setTop(bar);
-    	Arc pac = new Pacman(0,0,31,31,45, 270);//pac.applyCss();
-    	pac.setLayoutX(400);
-    	pac.setLayoutY(400);//pac.setType(ArcType.ROUND);
-    	gameArea.getChildren().add(pac);
-    }
+	@FXML
+	private BorderPane window;
 
-    public class MenuItemSelected implements EventHandler<ActionEvent> {
+	@FXML
+	private Pane gameArea;
+	
+	private Stage primaryStage;
+
+	@FXML
+	public void initialize() {
+		MenuBar bar = new MenuBar();
+
+		Menu file = new Menu("File");
+		MenuItem load = new MenuItem("Load game");
+		MenuItem save = new MenuItem("Save game");
+		MenuItem exit = new MenuItem("Exit");
+
+		file.getItems().addAll(load, save, new SeparatorMenuItem(), exit);
+		FileMenuItemSelected handler = new FileMenuItemSelected();
+		for (MenuItem item : file.getItems()) {
+			item.addEventHandler(ActionEvent.ACTION, handler);
+		}
+		
+		Menu view = new Menu("View");
+		MenuItem leaderBoard = new MenuItem("Leader board");
+		MenuItem instructions = new MenuItem("How to play");
+		view.getItems().addAll(leaderBoard, new SeparatorMenuItem(), instructions);
+
+		bar.getMenus().addAll(file, view);
+		window.setTop(bar);
+		
+		
+		Pacman pacman = new Pacman(Pacman.RIGHT);
+		pacman.setLayoutX(40);
+		pacman.setLayoutY(50);
+		gameArea.getChildren().add(pacman);
+	}
+
+	public class FileMenuItemSelected implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
+			MenuItem item = (MenuItem)event.getSource();
+			switch(item.getText()) {
+			case "Load game":
+				break;
+			case "Save game":
+				for(Node pacman: gameArea.getChildren()) {
+					Pacman current = (Pacman)pacman;
+					current.setCaught(false);
+					PacmanThread pt = new PacmanThread(current);
+					pt.start();
+				}
+				break;
+			case "Exit":
+				for(Node pacman: gameArea.getChildren()) {
+					Pacman current = (Pacman)pacman;
+					current.setCaught(true);
+				}
+				primaryStage.hide();
+				break;
+			}
 		}	
-    }
+	}
+
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
 }

@@ -1,6 +1,7 @@
-Circle, Pacman{
+Pacman {
     -fx-fill: yellow;
     -fx-stroke-width: 5.0;
     -fx-stroke: black;
-    -fx-type: ROUND;
+    -fx-stroke-line-cap:round;
+    -fx-stroke-line-join: round;
 }
