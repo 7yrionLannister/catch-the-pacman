@@ -1,42 +1,82 @@
 package model;
 
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
+import java.io.Serializable;
 
 
-public class Pacman extends Arc {
-	public final static byte UP = 1;
-	public final static byte DOWN = 2;
-	public final static byte LEFT = 3;
-	public final static byte RIGHT = 4;
+public class Pacman implements Serializable {
+	public final static int UP = 1;
+	public final static int DOWN = 2;
+	public final static int LEFT = 3;
+	public final static int RIGHT = 4;
 	
-	public final static int radius = 25;
-	private boolean openMouth;
+	private int radius;
+	private int posX;
+	private int posY;
+	private int waitingTime;
+	private int direction;
+	private int bounces;
 	private boolean caught;
-	private byte direction;
+	private int visionAngle;
 	
-	public Pacman(byte direction) {
-		super(0, 0, radius, radius, 45, 270);
-		super.setType(ArcType.ROUND);
-		openMouth = false;
-		caught = false;
+	public Pacman(int radius, int posX, int posY, int waitingTime, int direction, int bounces, int visionAngle, boolean caught) {
+		this.radius = radius;
+		this.posX = posX;
+		this.posY = posY;
+		this.waitingTime = waitingTime;
 		this.direction = direction;
-		switch(direction) {
-		case UP:
-			setRotate(270);
-			break;
-		case DOWN:
-			setRotate(90);
-			break;
-		case LEFT:
-			setRotate(180);
-			break;
-		case RIGHT:
-			setRotate(0);
-			break;
-		}
+		this.bounces = bounces;
+		this.visionAngle = visionAngle;
+		this.caught = caught;
 	}
-	
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
+
+	public int getWaitingTime() {
+		return waitingTime;
+	}
+
+	public void setWaitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+	public int getBounces() {
+		return bounces;
+	}
+
+	public void setBounces(int bounces) {
+		this.bounces = bounces;
+	}
+
 	public boolean isCaught() {
 		return caught;
 	}
@@ -44,51 +84,12 @@ public class Pacman extends Arc {
 	public void setCaught(boolean caught) {
 		this.caught = caught;
 	}
-	
-	public byte getDirection() {
-		return direction;
-	}
-	
-	public void setDirection(byte direction) {
-		this.direction = direction;
+
+	public int getVisionAngle() {
+		return visionAngle;
 	}
 
-	public void move() {
-		setStartAngle(openMouth? getStartAngle()+5 : getStartAngle()-5);
-		setLength(openMouth? getLength()-10 : getLength()+10);
-		if(getStartAngle()==0 || getStartAngle()==45) {
-			openMouth = !openMouth;
-		}
-		
-		switch(direction) {
-		case UP:
-			setLayoutY(getLayoutY()-5);
-			if(getLayoutY()-radius == 0) {
-				setDirection(DOWN);
-				setRotate(getRotate()+180);
-			}
-			break;
-		case DOWN:
-			setLayoutY(getLayoutY()+5);
-			if(getLayoutY()+radius == getParent().getLayoutBounds().getMaxY()) {
-				setDirection(UP);
-				setRotate(getRotate()+180);
-			}
-			break;
-		case LEFT:
-			setLayoutX(getLayoutX()-5);
-			if(getLayoutX()-radius == 0) {
-				setDirection(RIGHT);
-				setRotate(getRotate()+180);
-			}
-			break;
-		case RIGHT:
-			setLayoutX(getLayoutX()+5);
-			if(getLayoutX()+radius == getParent().getLayoutBounds().getMaxX()) {
-				setDirection(LEFT);
-				setRotate(getRotate()+180);
-			}
-			break;
-		}
+	public void setVisionAngle(int visionAngle) {
+		this.visionAngle = visionAngle;
 	}
 }

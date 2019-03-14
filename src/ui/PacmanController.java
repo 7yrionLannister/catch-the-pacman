@@ -3,13 +3,14 @@ package ui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
 import model.Pacman;
 import threads.PacmanThread;
@@ -28,7 +29,7 @@ public class PacmanController {
 	@FXML
 	public void initialize() {
 		MenuBar bar = new MenuBar();
-
+		
 		Menu file = new Menu("File");
 		MenuItem load = new MenuItem("Load game");
 		MenuItem save = new MenuItem("Save game");
@@ -48,11 +49,14 @@ public class PacmanController {
 		bar.getMenus().addAll(file, view);
 		window.setTop(bar);
 		
-		
-		Pacman pacman = new Pacman(Pacman.RIGHT);
-		pacman.setLayoutX(40);
-		pacman.setLayoutY(50);
-		gameArea.getChildren().add(pacman);
+		Pacman pb = new Pacman(23, 75, 75, 50, Pacman.RIGHT, 0, 0, false);
+		PacmanThread pt = new PacmanThread(pb, 0, this);
+		Arc pacmansito = new Arc(0, 0, pb.getRadius(), pb.getRadius(), 45, 270);
+		pacmansito.setLayoutX(pb.getPosX());
+		pacmansito.setLayoutY(pb.getPosY());
+		pacmansito.setType(ArcType.ROUND);
+		pt.start();
+		gameArea.getChildren().add(pacmansito);
 	}
 
 	public class FileMenuItemSelected implements EventHandler<ActionEvent> {
@@ -64,18 +68,8 @@ public class PacmanController {
 			case "Load game":
 				break;
 			case "Save game":
-				for(Node pacman: gameArea.getChildren()) {
-					Pacman current = (Pacman)pacman;
-					current.setCaught(false);
-					PacmanThread pt = new PacmanThread(current);
-					pt.start();
-				}
 				break;
 			case "Exit":
-				for(Node pacman: gameArea.getChildren()) {
-					Pacman current = (Pacman)pacman;
-					current.setCaught(true);
-				}
 				primaryStage.hide();
 				break;
 			}
@@ -84,5 +78,9 @@ public class PacmanController {
 
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+	}
+	
+	public Pane getGameArea() {
+		return gameArea;
 	}
 }
