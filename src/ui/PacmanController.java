@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -8,12 +9,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.stage.Stage;
 import model.Pacman;
-import threads.PacmanThread;
 
 
 public class PacmanController {
@@ -22,14 +18,9 @@ public class PacmanController {
 	private BorderPane window;
 
 	@FXML
-	private Pane gameArea;
-	
-	private Stage primaryStage;
-
-	@FXML
 	public void initialize() {
 		MenuBar bar = new MenuBar();
-		
+
 		Menu file = new Menu("File");
 		MenuItem load = new MenuItem("Load game");
 		MenuItem save = new MenuItem("Save game");
@@ -40,7 +31,7 @@ public class PacmanController {
 		for (MenuItem item : file.getItems()) {
 			item.addEventHandler(ActionEvent.ACTION, handler);
 		}
-		
+
 		Menu view = new Menu("View");
 		MenuItem leaderBoard = new MenuItem("Leader board");
 		MenuItem instructions = new MenuItem("How to play");
@@ -48,15 +39,6 @@ public class PacmanController {
 
 		bar.getMenus().addAll(file, view);
 		window.setTop(bar);
-		
-		Pacman pb = new Pacman(23, 75, 75, 50, Pacman.RIGHT, 0, 0, false);
-		PacmanThread pt = new PacmanThread(pb, 0, this);
-		Arc pacmansito = new Arc(0, 0, pb.getRadius(), pb.getRadius(), 45, 270);
-		pacmansito.setLayoutX(pb.getPosX());
-		pacmansito.setLayoutY(pb.getPosY());
-		pacmansito.setType(ArcType.ROUND);
-		pt.start();
-		gameArea.getChildren().add(pacmansito);
 	}
 
 	public class FileMenuItemSelected implements EventHandler<ActionEvent> {
@@ -70,17 +52,27 @@ public class PacmanController {
 			case "Save game":
 				break;
 			case "Exit":
-				primaryStage.hide();
+				Platform.exit();
 				break;
 			}
 		}	
 	}
 
-	public void setPrimaryStage(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-	}
-	
-	public Pane getGameArea() {
-		return gameArea;
+	public boolean movePacman(int id, Pacman pac, boolean openMouth, boolean bounce) {
+		//TODO Esto es responsabilidad del CANVAS
+		/*Arc currentPacman = (Arc)gameArea.getChildren().get(id);
+		currentPacman.setLayoutX(pac.getPosX());
+		currentPacman.setLayoutY(pac.getPosY());
+
+		currentPacman.setStartAngle(openMouth? currentPacman.getStartAngle()+5 : currentPacman.getStartAngle()-5);
+		currentPacman.setLength(openMouth? currentPacman.getLength()-10 : currentPacman.getLength()+10);
+		if(currentPacman.getStartAngle()==0 || currentPacman.getStartAngle()==45) {
+			openMouth = !openMouth;
+		}
+		if(bounce) {
+			currentPacman.setRotate(currentPacman.getRotate()+180);
+		}
+		*/
+		return openMouth;
 	}
 }

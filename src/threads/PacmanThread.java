@@ -8,57 +8,70 @@ public class PacmanThread extends Thread {
 	private PacmanController pmc;
 	private Pacman pacman;
 	private int pacmanID;
-	
+	private boolean openMouth;
+
 	public PacmanThread(Pacman pacman, int pacmanID, PacmanController pmc) {
 		this.pacman = pacman;
 		this.pacmanID = pacmanID;
 		this.pmc = pmc;
+		openMouth = false;
 	}
-	
+
 	@Override
 	public void run() {
+		//TODO Hacer esto mismo de aqui pero con CANVAS, asi estara mas elegantoso
+		/*
+		switch(pacman.getDirection()) {
+		case Pacman.UP:
+			pmc.getGameArea().getChildren().get(pacmanID).setRotate(270);
+			break;
+		case Pacman.DOWN:
+			pmc.getGameArea().getChildren().get(pacmanID).setRotate(90);
+			break;
+		case Pacman.LEFT:
+			pmc.getGameArea().getChildren().get(pacmanID).setRotate(180);
+			break;
+		case Pacman.RIGHT:
+			pmc.getGameArea().getChildren().get(pacmanID).setRotate(0);
+			break;
+		}
+		*/
 		while(!pacman.isCaught()) {
-			//*******************************************************************************
-			//TODO esto se supone que debe mover la boca, pero ahora hay que hacer que lo haga el paquete ui, no el paquete threads ni el model
-			/*setStartAngle(openMouth? getStartAngle()+5 : getStartAngle()-5);
-			setLength(openMouth? getLength()-10 : getLength()+10);
-			if(getStartAngle()==0 || getStartAngle()==45) {
-				openMouth = !openMouth;
-			}
-			*/
-			
+			boolean bounce = false;
 			switch(pacman.getDirection()) {
 			case Pacman.UP:
-				pacman.setPosY(pacman.getPosY()-5);
-				if(pacman.getPosY()-pacman.getRadius() == 0) {
+				pacman.setPosY(pacman.getPosY() - 5);
+				if(pacman.getPosY()-pacman.getRadius() <= 0) {
 					pacman.setDirection(Pacman.DOWN);
-					pacman.setVisionAngle(pacman.getVisionAngle()+180);
+					bounce = true;
 				}
 				break;
 			case Pacman.DOWN:
 				pacman.setPosY(pacman.getPosY()+5);
-				if(pacman.getPosY()+pacman.getRadius() == pmc.getGameArea().getLayoutBounds().getMaxY()) {
+				if(pacman.getPosY()+pacman.getRadius() >= pmc.getGameArea().getLayoutBounds().getMaxY() && pmc.getGameArea().getLayoutBounds().getMaxY() != 0) {
 					pacman.setDirection(Pacman.UP);
-					pacman.setVisionAngle(pacman.getVisionAngle()+180);
+					bounce = true;
 				}
 				break;
 			case Pacman.LEFT:
 				pacman.setPosX(pacman.getPosX()-5);
-				if(pacman.getPosX()-pacman.getRadius() == 0) {
+				if(pacman.getPosX()-pacman.getRadius() <= 0) {
 					pacman.setDirection(Pacman.RIGHT);
-					pacman.setVisionAngle(pacman.getVisionAngle()+180);
+					bounce = true;
 				}
 				break;
 			case Pacman.RIGHT:
 				pacman.setPosX(pacman.getPosX()+5);
-				if(pacman.getPosX()+pacman.getRadius() == pmc.getGameArea().getLayoutBounds().getMaxX()) {
+				if(pacman.getPosX()+pacman.getRadius() >= pmc.getGameArea().getLayoutBounds().getMaxX() && pmc.getGameArea().getLayoutBounds().getMaxX() != 0) {
 					pacman.setDirection(Pacman.LEFT);
-					pacman.setVisionAngle(pacman.getVisionAngle()+180);
+					bounce = true;
 				}
 				break;
 			}
+			//TODO Hacer el equivalente a esto pero en CANVAS
+			openMouth = pmc.movePacman(pacmanID, pacman, openMouth, bounce);
 			try {
-				sleep(40);
+				sleep(pacman.getWaitingTime());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
