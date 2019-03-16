@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="window" stylesheets="@pacmanStyle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PacmanController">
-   <center>
-      <Pane fx:id="gameArea" prefHeight="650.0" prefWidth="930.0" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+
+<BorderPane fx:id="window" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PacmanController" />

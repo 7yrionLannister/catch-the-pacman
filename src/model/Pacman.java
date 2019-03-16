@@ -16,6 +16,8 @@ public class Pacman implements Serializable {
 	private int direction;
 	private int bounces;
 	private boolean caught;
+	private int startAngle;
+	private int length;
 	
 	public Pacman(int radius, int posX, int posY, int waitingTime, int direction, int bounces, boolean caught) {
 		this.radius = radius;
@@ -25,6 +27,8 @@ public class Pacman implements Serializable {
 		this.direction = direction;
 		this.bounces = bounces;
 		this.caught = caught;
+		startAngle = 45;
+		length = 270;
 	}
 
 	public int getRadius() {
@@ -81,5 +85,21 @@ public class Pacman implements Serializable {
 
 	public void setCaught(boolean caught) {
 		this.caught = caught;
+	}
+
+	public int getStartAngle() {
+		return startAngle;
+	}
+
+	public void setStartAngle(int startAngle) {
+		this.startAngle = startAngle;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 }

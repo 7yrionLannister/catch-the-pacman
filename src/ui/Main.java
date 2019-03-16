@@ -3,11 +3,13 @@ package ui;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 
 public class Main extends Application {
@@ -18,13 +20,19 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("pacman.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("pacman.fxml"));
+		Parent root = loader.load();
 
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.setTitle("Catch the pacman!");
-		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setResizable(false);
+		//stage.setResizable(false);
+		PacmanController pcmctrl = loader.getController();
+		stage.setOnCloseRequest((new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+            	pcmctrl.stopApplication();
+            }
+        }));
 		stage.show();
 	}
 }

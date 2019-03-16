@@ -7,12 +7,10 @@ import ui.PacmanController;
 public class PacmanThread extends Thread {
 	private PacmanController pmc;
 	private Pacman pacman;
-	private int pacmanID;
 	private boolean openMouth;
 
-	public PacmanThread(Pacman pacman, int pacmanID, PacmanController pmc) {
+	public PacmanThread(Pacman pacman, PacmanController pmc) {
 		this.pacman = pacman;
-		this.pacmanID = pacmanID;
 		this.pmc = pmc;
 		openMouth = false;
 	}
@@ -36,8 +34,9 @@ public class PacmanThread extends Thread {
 			break;
 		}
 		*/
-		while(!pacman.isCaught()) {
-			boolean bounce = false;
+		while(!pacman.isCaught() && pmc.isOpened()) {
+			boolean bounce = false;	
+			
 			switch(pacman.getDirection()) {
 			case Pacman.UP:
 				pacman.setPosY(pacman.getPosY() - 5);
@@ -48,7 +47,7 @@ public class PacmanThread extends Thread {
 				break;
 			case Pacman.DOWN:
 				pacman.setPosY(pacman.getPosY()+5);
-				if(pacman.getPosY()+pacman.getRadius() >= pmc.getGameArea().getLayoutBounds().getMaxY() && pmc.getGameArea().getLayoutBounds().getMaxY() != 0) {
+				if(pacman.getPosY()+pacman.getRadius() >= pmc.sizeY) {
 					pacman.setDirection(Pacman.UP);
 					bounce = true;
 				}
@@ -62,28 +61,20 @@ public class PacmanThread extends Thread {
 				break;
 			case Pacman.RIGHT:
 				pacman.setPosX(pacman.getPosX()+5);
-				if(pacman.getPosX()+pacman.getRadius() >= pmc.getGameArea().getLayoutBounds().getMaxX() && pmc.getGameArea().getLayoutBounds().getMaxX() != 0) {
+				if(pacman.getPosX()+pacman.getRadius() >= pmc.sizeX) {
 					pacman.setDirection(Pacman.LEFT);
 					bounce = true;
 				}
 				break;
 			}
 			//TODO Hacer el equivalente a esto pero en CANVAS
-			openMouth = pmc.movePacman(pacmanID, pacman, openMouth, bounce);
+			//openMouth = pmc.movePacman(bounce);
 			try {
 				sleep(pacman.getWaitingTime());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public int getPacmanID() {
-		return pacmanID;
-	}
-
-	public void setPacmanID(int pacmanID) {
-		this.pacmanID = pacmanID;
 	}
 
 	public Pacman getPacman() {

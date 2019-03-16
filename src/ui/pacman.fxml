@@ -2,4 +2,5 @@
 
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="window" stylesheets="@pacmanStyle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PacmanController" />
+
+<BorderPane fx:id="window" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PacmanController" />
