@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -27,8 +28,8 @@ public class PacmanController {
 	private ArrayList<Pacman> pacmans;
 	private boolean windowOpened;
 	
-	public static double sizeX;
-	public static double sizeY;
+	//public static double sizeX;
+	//public static double sizeY;
 	
 	@FXML
 	public void initialize() {
@@ -53,23 +54,21 @@ public class PacmanController {
 		
 		//****************************************************************************
 		pacmans = new ArrayList<>();
-		Pacman pac = new Pacman(70, 60, 60, 50, Pacman.RIGHT, 0, false);
-		Pacman pac1 = new Pacman(90, 70,70,70, Pacman.LEFT, 0, false);
-		Pacman pac2 = new Pacman(90, 80,120,100, Pacman.RIGHT, 0, false);
+		Pacman pac = new Pacman(70, 0, 0, 50, Pacman.RIGHT, 0, false);
+		Pacman pac1 = new Pacman(90, 70,70,70, Pacman.DOWN, 0, false);
+		Pacman pac2 = new Pacman(90, 80,120,20, Pacman.RIGHT, 0, false);
 		pacmans.add(pac);
 		pacmans.add(pac1);
 		pacmans.add(pac2);
 		gz = new GameZone(pacmans);
-		sizeX = gz.getWidth();
-		sizeY = gz.getHeight();
-		window.setCenter(gz);gz.redraw();window.setMaxWidth(sizeX);window.setMaxHeight(sizeY);
+		window.setCenter(gz);gz.redraw();window.setMaxWidth(gz.getWidth());window.setMaxHeight(gz.getHeight());
 		PacmanThread pt = new PacmanThread(pac, this);
 		PacmanThread pt1 = new PacmanThread(pac1, this);
 		PacmanThread pt2 = new PacmanThread(pac2, this);
 		pt.start();
 		pt1.start();
 		pt2.start();
-		
+		/*
 		Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -84,12 +83,12 @@ public class PacmanController {
         });
         thread.setDaemon(true);
         thread.start();
-		
-		
-		//****************************************************************************
-		
+        */
 		bar.getMenus().addAll(file, view);
 		window.setTop(bar);
+		RefreshInterface ri = new RefreshInterface();
+		ri.setDaemon(true);
+		ri.start();
 	}
 
 	public class FileMenuItemSelected implements EventHandler<ActionEvent> {
@@ -111,16 +110,6 @@ public class PacmanController {
 
 	public boolean movePacman(boolean bounce) {
 		//TODO Esto es responsabilidad del CANVAS
-		/*
-		currentPacman.setStartAngle(openMouth? currentPacman.getStartAngle()+5 : currentPacman.getStartAngle()-5);
-		currentPacman.setLength(openMouth? currentPacman.getLength()-10 : currentPacman.getLength()+10);
-		if(currentPacman.getStartAngle()==0 || currentPacman.getStartAngle()==45) {
-			openMouth = !openMouth;
-		}
-		if(bounce) {
-			currentPacman.setRotate(currentPacman.getRotate()+180);
-		}
-		*/
 		gz.redraw();
 		return true;
 	}
@@ -133,5 +122,22 @@ public class PacmanController {
 	
 	public boolean isOpened() {
 		return windowOpened;
+	}
+	
+	public class RefreshInterface extends Thread {
+		@Override
+        public void run() {
+            while (true) {
+            	movePacman(false);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                }
+            }
+        }
+	}
+	
+	public Canvas getGameZone() {
+		return gz;
 	}
 }

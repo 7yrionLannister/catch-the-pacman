@@ -7,12 +7,9 @@ import ui.PacmanController;
 public class PacmanThread extends Thread {
 	private PacmanController pmc;
 	private Pacman pacman;
-	private boolean openMouth;
-
 	public PacmanThread(Pacman pacman, PacmanController pmc) {
 		this.pacman = pacman;
 		this.pmc = pmc;
-		openMouth = false;
 	}
 
 	@Override
@@ -35,35 +32,29 @@ public class PacmanThread extends Thread {
 		}
 		*/
 		while(!pacman.isCaught() && pmc.isOpened()) {
-			boolean bounce = false;	
-			
 			switch(pacman.getDirection()) {
 			case Pacman.UP:
 				pacman.setPosY(pacman.getPosY() - 5);
-				if(pacman.getPosY()-pacman.getRadius() <= 0) {
+				if(pacman.getPosY()/*-pacman.getRadius()*/ <= 0) {
 					pacman.setDirection(Pacman.DOWN);
-					bounce = true;
 				}
 				break;
 			case Pacman.DOWN:
 				pacman.setPosY(pacman.getPosY()+5);
-				if(pacman.getPosY()+pacman.getRadius() >= pmc.sizeY) {
+				if(pacman.getPosY()+pacman.getRadius()-7 >= pmc.getGameZone().getHeight()) {
 					pacman.setDirection(Pacman.UP);
-					bounce = true;
 				}
 				break;
 			case Pacman.LEFT:
 				pacman.setPosX(pacman.getPosX()-5);
-				if(pacman.getPosX()-pacman.getRadius() <= 0) {
+				if(pacman.getPosX()/*-pacman.getRadius()*/ <= 0) {
 					pacman.setDirection(Pacman.RIGHT);
-					bounce = true;
 				}
 				break;
 			case Pacman.RIGHT:
 				pacman.setPosX(pacman.getPosX()+5);
-				if(pacman.getPosX()+pacman.getRadius() >= pmc.sizeX) {
+				if(pacman.getPosX()+pacman.getRadius()-7 >= pmc.getGameZone().getWidth()) {
 					pacman.setDirection(Pacman.LEFT);
-					bounce = true;
 				}
 				break;
 			}
