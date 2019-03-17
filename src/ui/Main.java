@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 
@@ -26,13 +25,13 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.setTitle("Catch the pacman!");
-		//stage.setResizable(false);
 		PacmanController pcmctrl = loader.getController();
 		stage.setOnCloseRequest((new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
             	pcmctrl.stopApplication();
             }
         }));
+		stage.setResizable(false);
 		stage.show();
 	}
 }
