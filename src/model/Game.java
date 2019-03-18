@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Game {
+	public final static String SER_HALL_OF_FAME = "data/hall.got";
 	public final static String SER_PATH = "data/game.got";
 	public final static String EASY_LEVEL_PATH = "data/level0.txt";
 	public final static String MEDIUM_LEVEL_PATH = "data/level1.txt";
@@ -77,5 +79,72 @@ public class Game {
 	
 	public ArrayList<Pacman> getPacmans() {
 		return pacmans;
+	}
+	
+	public boolean fitForTheHallOfTheFame(int score) throws IOException, ClassNotFoundException {
+		boolean fit = true;
+		File file = new File(SER_HALL_OF_FAME);
+		if(file.exists()) {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			ArrayList<HallMember> hallMembers = (ArrayList)ois.readObject();
+			fit = (hallMembers.size() < 10) || (hallMembers.get(hallMembers.size()-1).getScore() < score);
+			ois.close();
+			fis.close();
+		}
+		return fit;
+	}
+	
+	public void addHallOfFameMember(HallMember hm) throws IOException, ClassNotFoundException {
+		File file = new File(SER_HALL_OF_FAME);
+		ArrayList<HallMember> hallMembers = new ArrayList<>();
+		if(file.exists()) {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			hallMembers = (ArrayList)ois.readObject();
+			ois.close();
+			fis.close();
+		}
+		if(hallMembers.size() != 0) {
+			hallMembers.add(hallMembers.size()-1, hm);
+		}
+		else {
+			hallMembers.add(hm);
+		}
+		int[] scores = new int[hallMembers.size()];
+		Arrays.sort(scores);
+		ArrayList<HallMember> hmSorted = new ArrayList<>();
+		for(int i = 0; i < scores.length; i++) {
+			for(HallMember hallm:hallMembers) {
+				if(hallm.getScore() == scores[i]) {
+					hmSorted.add(hallm);
+					hallMembers.remove(hallm);
+				}
+			}
+		}
+		if(hmSorted.size() == 11) {
+			hmSorted.remove(10);
+		}
+		FileOutputStream fos = new FileOutputStream(file);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(hmSorted);
+		oos.close();
+		fos.close();
+	}
+	
+	public ArrayList<HallMember> getHallOfFame() throws IOException, ClassNotFoundException {
+		File file = new File(SER_HALL_OF_FAME);
+		ArrayList<HallMember> hallMembers = null;
+		if(file.exists()) {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			hallMembers = (ArrayList)ois.readObject();
+			ois.close();
+			fis.close();
+		}
+		return hallMembers;
 	}
 }

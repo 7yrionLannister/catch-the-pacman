@@ -5,28 +5,31 @@ import java.io.IOException;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import model.Game;
+import model.HallMember;
 import model.Pacman;
 import threads.PacmanThread;
 
 
 public class GameZone extends Canvas {
-	private int score;
 	private GraphicsContext gc;
 	private boolean openMouth;
 	private int startAngle;
 	private int angleLength;
 	private Game game;
 	private boolean onPauseSelected;
+	private int score;
 
 	public GameZone() {
 		super(800, 600);
-		score = 0;
 		onPauseSelected = true;
 		gc = super.getGraphicsContext2D();
 		gc.setLineWidth(3);
@@ -35,12 +38,17 @@ public class GameZone extends Canvas {
 		startAngle = 45;
 		angleLength = 270;
 		super.setOnMouseClicked(new VerifyPacmanCatched());
+		score = 0;
 	}
 
 	public void redraw() {
 		moveMouth();
 		drawPacmans();
 		bounceWhenCollide();
+		score = 0;
+		for(Pacman pac:game.getPacmans()) {
+			score += pac.getBounces();
+		}
 	}
 	
 	private void moveMouth() {
@@ -80,6 +88,8 @@ public class GameZone extends Canvas {
 			for(int j = i+1; j < game.getPacmans().size(); j++) {
 				Rectangle r1 = new Rectangle(game.getPacmans().get(i).getPosX(), game.getPacmans().get(i).getPosY(), game.getPacmans().get(i).getRadius(), game.getPacmans().get(i).getRadius());
 				if(r1.intersects(game.getPacmans().get(j).getPosX(), game.getPacmans().get(j).getPosY(), game.getPacmans().get(j).getRadius(), game.getPacmans().get(j).getRadius())) {
+					game.getPacmans().get(i).setBounces(game.getPacmans().get(i).getBounces()+1);
+					game.getPacmans().get(j).setBounces(game.getPacmans().get(j).getBounces()+1);
 					switch(game.getPacmans().get(i).getDirection()) {
 						case Pacman.DOWN:
 							if(!game.getPacmans().get(i).isCaught()) {
@@ -179,13 +189,44 @@ public class GameZone extends Canvas {
 		public void handle(MouseEvent event) {
 			for(Pacman pac:game.getPacmans()) {
 				if(!pac.isCaught()) {
+					if(onPauseSelected) {
+						break;
+					}
 					if(pac.getPosX() <= event.getX() && pac.getPosX()+pac.getRadius() >= event.getX()
 							&& pac.getPosY() <= event.getY() && pac.getPosY()+pac.getRadius() >= event.getY()) {
 						pac.setCaught(true);
+						boolean win = true;
+						for(int i = 0; i < game.getPacmans().size() && win; i++) {
+							if(!game.getPacmans().get(i).isCaught()) {
+								win = false;
+							}
+						}
+						if(win) {
+							Alert alert = new Alert(AlertType.INFORMATION, "Your score: " + score);
+							alert.setTitle("You won!!!");
+							alert.setContentText("Your score: " + score);
+							alert.setHeaderText("You've caught all the pacmans, congratulations");
+							alert.showAndWait();
+							try {
+								if(game.fitForTheHallOfTheFame(score)) {
+									TextInputDialog tid = new TextInputDialog("Put your nickname here");
+									tid.setTitle("Welcome to the hall of the fame!!!");
+									tid.setHeaderText("Write your nickname to be in the hall of fame");
+									tid.showAndWait();
+									game.addHallOfFameMember(new HallMember(tid.getEditor().getText(), score));
+								}
+							} catch (ClassNotFoundException | IOException e) {
+								e.printStackTrace();
+							}
+						}
 					}
 				}
 			}
 		}
+	}
+	
+	public int getScore() {
+		return score;
 	}
 }
 

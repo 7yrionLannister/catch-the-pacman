@@ -6,6 +6,10 @@
 40	350	230	5	UP	0	false
 20	280	10	6	DOWN	0	false
 25	400	400	4	LEFT	0	false
-15	5	370	5	RIGHT	0	false
-17	400	30	6	UP	0	false
+16	5	370	5	RIGHT	0	false
+17	410	30	6	UP	0	false
 10	350	350	5	DOWN	0	false
+25	500	500	4	LEFT	0	false
+15	45	390	5	RIGHT	0	false
+17	300	30	3	UP	0	false
+10	380	330	5	DOWN	0	false

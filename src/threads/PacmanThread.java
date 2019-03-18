@@ -32,24 +32,28 @@ public class PacmanThread extends Thread {
 		case Pacman.UP:
 			pacman.setPosY(pacman.getPosY() - DELTA);
 			if(pacman.getPosY() <= 0) {
+				pacman.setBounces(pacman.getBounces()+1);
 				pacman.setDirection(Pacman.DOWN);
 			}
 			break;
 		case Pacman.DOWN:
 			pacman.setPosY(pacman.getPosY()+DELTA);
 			if(pacman.getPosY()+pacman.getRadius() >= gamez.getHeight()) {
+				pacman.setBounces(pacman.getBounces()+1);
 				pacman.setDirection(Pacman.UP);
 			}
 			break;
 		case Pacman.LEFT:
 			pacman.setPosX(pacman.getPosX()-DELTA);
 			if(pacman.getPosX() <= 0) {
+				pacman.setBounces(pacman.getBounces()+1);
 				pacman.setDirection(Pacman.RIGHT);
 			}
 			break;
 		case Pacman.RIGHT:
 			pacman.setPosX(pacman.getPosX()+DELTA);
 			if(pacman.getPosX()+pacman.getRadius() >= gamez.getWidth()) {
+				pacman.setBounces(pacman.getBounces()+1);
 				pacman.setDirection(Pacman.LEFT);
 			}
 			break;
