@@ -114,7 +114,7 @@ public class PacmanController {
 						TableColumn nicknameColumn = new TableColumn("Nickname");
 						nicknameColumn.setCellValueFactory(new PropertyValueFactory<HallMember, String>("nickname"));
 				        TableColumn scoreColumn = new TableColumn("Score");
-				        scoreColumn.setCellValueFactory(new PropertyValueFactory<HallMember, Integer>("nickname"));
+				        scoreColumn.setCellValueFactory(new PropertyValueFactory<HallMember, Integer>("score"));
 				        
 				        ObservableList<HallMember> hm = FXCollections.observableArrayList(gz.getGame().getHallOfFame());
 				        
@@ -182,7 +182,7 @@ public class PacmanController {
 					movePacmans();
 				}
 				try {
-					Thread.sleep(15);
+					Thread.sleep(25);
 				} catch (InterruptedException ex) {
 				}
 			}

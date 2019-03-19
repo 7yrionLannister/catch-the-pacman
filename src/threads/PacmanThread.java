@@ -5,7 +5,7 @@ import ui.GameZone;
 
 
 public class PacmanThread extends Thread {
-	public final static int DELTA = 1;
+	public final static int DELTA = 6;
 	private GameZone gamez;
 	private Pacman pacman;
 	public PacmanThread(Pacman pacman, GameZone gamez) {

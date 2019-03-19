@@ -1,15 +1,15 @@
 #level
 2
 #radius	posX	posY	wait	direction	bounces	move
-35	70	90	3	LEFT	0	false
-30	120	120	4	RIGHT	0	false
-40	350	230	5	UP	0	false
-20	280	10	6	DOWN	0	false
-25	400	400	4	LEFT	0	false
-16	5	370	5	RIGHT	0	false
-17	410	30	6	UP	0	false
-10	350	350	5	DOWN	0	false
-25	500	500	4	LEFT	0	false
-15	45	390	5	RIGHT	0	false
-17	300	30	3	UP	0	false
-10	380	330	5	DOWN	0	false
+35	70	90	12	LEFT	0	false
+30	120	120	16	RIGHT	0	false
+40	350	230	20	UP	0	false
+20	280	10	24	DOWN	0	false
+25	400	400	16	LEFT	0	false
+16	5	370	20	RIGHT	0	false
+17	410	30	24	UP	0	false
+10	350	350	20	DOWN	0	false
+25	500	500	16	LEFT	0	false
+15	45	390	20	RIGHT	0	false
+17	300	30	12	UP	0	false
+10	380	330	20	DOWN	0	false

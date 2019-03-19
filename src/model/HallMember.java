@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 
+
 public class HallMember implements Serializable {
 	private String nickname;
 	private int score;

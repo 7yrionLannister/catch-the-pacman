@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Game {
 	public final static String SER_HALL_OF_FAME = "data/hall.got";
@@ -88,8 +89,25 @@ public class Game {
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			
-			ArrayList<HallMember> hallMembers = (ArrayList)ois.readObject();
-			fit = (hallMembers.size() < 10) || (hallMembers.get(hallMembers.size()-1).getScore() < score);
+			ArrayList<HallMember> hallMembers = (ArrayList<HallMember>)ois.readObject();
+			ArrayList<HallMember> test = (ArrayList<HallMember>) hallMembers.clone();
+			HallMember hallTest = new HallMember("testHallMember", score);
+			test.add(hallTest);
+			test.sort(new Comparator<HallMember>() {
+				@Override
+				public int compare(HallMember o1, HallMember o2) {
+					if(o1.getScore() > o2.getScore()) {
+						return 1;
+					}
+					else if(o1.getScore() < o2.getScore()){
+						return -1;
+					}
+					else {
+						return 0;
+					}
+				}
+			});
+			fit = (hallMembers.size() < 10) || (test.size() == 11 && !test.get(test.size()-1).equals(hallTest));
 			ois.close();
 			fis.close();
 		}
@@ -107,29 +125,30 @@ public class Game {
 			ois.close();
 			fis.close();
 		}
-		if(hallMembers.size() != 0) {
-			hallMembers.add(hallMembers.size()-1, hm);
-		}
-		else {
-			hallMembers.add(hm);
-		}
-		int[] scores = new int[hallMembers.size()];
-		Arrays.sort(scores);
-		ArrayList<HallMember> hmSorted = new ArrayList<>();
-		for(int i = 0; i < scores.length; i++) {
-			for(HallMember hallm:hallMembers) {
-				if(hallm.getScore() == scores[i]) {
-					hmSorted.add(hallm);
-					hallMembers.remove(hallm);
+		
+		hallMembers.add(hm);
+		hallMembers.sort(new Comparator<HallMember>() {
+			@Override
+			public int compare(HallMember o1, HallMember o2) {
+				if(o1.getScore() > o2.getScore()) {
+					return 1;
+				}
+				else if(o1.getScore() < o2.getScore()){
+					return -1;
+				}
+				else {
+					return 0;
 				}
 			}
+		});
+		System.out.println(hallMembers.size());
+		if(hallMembers.size() == 11) {
+			hallMembers.remove(10);
 		}
-		if(hmSorted.size() == 11) {
-			hmSorted.remove(10);
-		}
+		
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(hmSorted);
+		oos.writeObject(hallMembers);
 		oos.close();
 		fos.close();
 	}
