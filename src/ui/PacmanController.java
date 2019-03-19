@@ -1,10 +1,6 @@
 package ui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.management.timer.Timer;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,15 +20,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.HallMember;
-import model.Pacman;
-import threads.PacmanThread;
 
 
 public class PacmanController {
