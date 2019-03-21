@@ -49,6 +49,9 @@ public class GameZone extends Canvas {
 		for(Pacman pac:game.getPacmans()) {
 			score += pac.getBounces();
 		}
+		gc.setFill(Color.BLACK);
+		gc.fillText("Bounces: " + score, 10, 590);
+		gc.setFill(Color.YELLOW);
 	}
 	
 	private void moveMouth() {

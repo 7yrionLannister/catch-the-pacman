@@ -32,7 +32,7 @@ public class PacmanController {
 	
 	@FXML
 	private BorderPane window;
-
+	
 	private GameZone gz;
 
 	private boolean windowOpened;

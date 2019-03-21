@@ -166,4 +166,12 @@ public class Game {
 		}
 		return hallMembers;
 	}
+	
+	public int getScore() {
+		int score = 0;
+		for(Pacman pac:pacmans) {
+			score += pac.getBounces();
+		}
+		return score;
+	}
 }
