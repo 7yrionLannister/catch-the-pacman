@@ -33,7 +33,8 @@ public class Game {
 	 * */
 	private ArrayList<Pacman> pacmans;
 
-	/**The constructor allows to initialize a new game , either from a level or a pre-saved game
+	/**The constructor allows to initialize a new game, either from a level file or a pre-saved game
+	 * @param archivePath The relative path of the file with which the game will start
 	 * */
 	public Game(String archivePath) throws ClassNotFoundException, IOException {
 		File file = new File(archivePath); 
@@ -72,7 +73,8 @@ public class Game {
 		fis.close();
 	}
 	
-	/**The method allows to start a new game with pacmans that are
+	/**The method allows to start a new game starting from a state in which the player has not made any progress
+	 * @param level The archive that represents the difficulty level for this game
 	 * */
 	private void startNewGameFromScratch(File level) throws IOException {
 		pacmans = new ArrayList<>();
@@ -98,10 +100,17 @@ public class Game {
 		fr.close();
 	}
 	
+	/**The method allows to obtain the list of pacmans that are beeing displayed at this time
+	 * @return An ArrayList of Pacmans
+	 * */
 	public ArrayList<Pacman> getPacmans() {
 		return pacmans;
 	}
 	
+	/**The method allows to know whether or not a hall member fits in the hall of fame
+	 * @param score Player's score
+	 * @return A boolean that indicates if the score is enough to integrate the player into the hall of fame
+	 * */
 	public boolean fitForTheHallOfTheFame(int score) throws IOException, ClassNotFoundException {
 		boolean fit = true;
 		File file = new File(SER_HALL_OF_FAME);
@@ -134,6 +143,9 @@ public class Game {
 		return fit;
 	}
 	
+	/**The method allows to add a new member to the hall of fame
+	 * @param hm The new member of the hall of fame
+	 * */
 	public void addHallOfFameMember(HallMember hm) throws IOException, ClassNotFoundException {
 		File file = new File(SER_HALL_OF_FAME);
 		ArrayList<HallMember> hallMembers = new ArrayList<>();
@@ -172,6 +184,9 @@ public class Game {
 		fos.close();
 	}
 	
+	/**The method allows to obtain the hall of fame members
+	 * @return an ArrayList with all the members of the hall of fame
+	 * */
 	public ArrayList<HallMember> getHallOfFame() throws IOException, ClassNotFoundException {
 		File file = new File(SER_HALL_OF_FAME);
 		ArrayList<HallMember> hallMembers = null;
@@ -186,6 +201,9 @@ public class Game {
 		return hallMembers;
 	}
 	
+	/**The method allows to obtain the player's score
+	 * @return An integer with the number of bounces that the pacmans have accumulated
+	 * */
 	public int getScore() {
 		int score = 0;
 		for(Pacman pac:pacmans) {

@@ -21,13 +21,25 @@ import threads.PacmanThread;
 
 public class GameZone extends Canvas {
 	private GraphicsContext gc;
+	/**The attribute indicates whether or not the pacman has to open its mouth
+	 * */
 	private boolean openMouth;
+	/**The attribute represents the starting angle of the mouth
+	 * */
 	private int startAngle;
+	/**The attribute represents the length of the pacman's back
+	 * */
 	private int angleLength;
 	private Game game;
+	/**The attribute indicates whether or not the game is on pause
+	 * */
 	private boolean onPauseSelected;
+	/**The total bounces if the pacmans
+	 * */
 	private int score;
 
+	/**The constructor allows to create an empty game zone
+	 * */
 	public GameZone() {
 		super(800, 600);
 		onPauseSelected = true;
@@ -41,6 +53,8 @@ public class GameZone extends Canvas {
 		score = 0;
 	}
 
+	/**The method allows to refresh the interface
+	 * */
 	public void redraw() {
 		moveMouth();
 		drawPacmans();
@@ -54,6 +68,8 @@ public class GameZone extends Canvas {
 		gc.setFill(Color.YELLOW);
 	}
 	
+	/**The  method allows to move the pacmans' mouth
+	 * */
 	private void moveMouth() {
 		gc.clearRect(0, 0,  super.getWidth(), super.getHeight());
 		startAngle = openMouth? startAngle+5 : startAngle-5;
@@ -63,6 +79,8 @@ public class GameZone extends Canvas {
 		}
 	}
 	
+	/**The method allows to draw all the pacmans on the game zone
+	 * */
 	private void drawPacmans() {
 		for(Pacman pac:game.getPacmans()) {
 			switch(pac.getDirection()) {
@@ -86,6 +104,8 @@ public class GameZone extends Canvas {
 		}
 	}
 	
+	/**The method allows two pacmans to bounce each other
+	 * */
 	private void bounceWhenCollide() {
 		for(int i = 0; i < game.getPacmans().size(); i++) {
 			for(int j = i+1; j < game.getPacmans().size(); j++) {
@@ -150,14 +170,22 @@ public class GameZone extends Canvas {
 		}
 	}
 	
+	/**The method allows to obtain the game that contains the pacmans
+	 * @return The current game
+	 * */
 	public Game getGame() {
 		return game;
 	}
 	
+	/**The method allows to modify the current game
+	 * @param game The new game
+	 * */
 	public void setGame(Game game) {
 		this.game = game;
 	}
 	
+	/**The method shows a pop-up window for the player to choose a difficulty level or the saved game
+	 * */
 	public void chooseLevelOrStartSavedGame() {
 		ChoiceDialog<String> cd = new ChoiceDialog<String>(Game.EASY_LEVEL_PATH, Game.MEDIUM_LEVEL_PATH, Game.HARD_LEVEL_PATH, Game.SER_PATH);
 		cd.showAndWait();
@@ -175,14 +203,21 @@ public class GameZone extends Canvas {
 		}
 	}
 	
+	/**The method allows to know whether or not the game is on pause
+	 * @return true if the game is paused and false in the opposite case
+	 * */
 	public boolean getOnPauseSelected() {
 		return onPauseSelected;
 	}
 	
+	/**The method allows to pause the game
+	 * */
 	public void pauseGame() {
 		onPauseSelected = true;
 	}
 	
+	/**The method allows to continue playing
+	 * */
 	public void continueGame() {
 		onPauseSelected = false;
 	}
@@ -229,6 +264,9 @@ public class GameZone extends Canvas {
 		}
 	}
 	
+	/**The method allows to obtain the score of the player
+	 * @return The player's score
+	 * */
 	public int getScore() {
 		return score;
 	}

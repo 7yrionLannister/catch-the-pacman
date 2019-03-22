@@ -5,15 +5,25 @@ import ui.GameZone;
 
 
 public class PacmanThread extends Thread {
+	/**The constant represents the number of pixels that the pacman moves each time
+	 * */
 	public final static int DELTA = 6;
+	/**The game zone where this pacman is contained
+	 * */
 	private GameZone gamez;
+	/**The pacman this thread is going to move
+	 * */
 	private Pacman pacman;
 	
+	/**The constructor allows to create a new Thread to move one pacman
+	 * @param pacman The pacman that is going to be moved
+	 * @param gamez The game zone where this pacman is contained
+	 * */
 	public PacmanThread(Pacman pacman, GameZone gamez) {
 		this.pacman = pacman;
 		this.gamez = gamez;
 	}
-
+	
 	@Override
 	public void run() {
 		while(!pacman.isCaught()) {
@@ -28,6 +38,8 @@ public class PacmanThread extends Thread {
 		}
 	}
 	
+	/**The method allows to move the pacman
+	 * */
 	private void moveForward() {
 		switch(pacman.getDirection()) {
 		case Pacman.UP:
@@ -61,10 +73,16 @@ public class PacmanThread extends Thread {
 		}
 	}
 
+	/**The method allows to obtain the pacman that this thread is moving
+	 * @return The pacman that this thread is moving
+	 * */
 	public Pacman getPacman() {
 		return pacman;
 	}
 
+	/**The method allows to change the pacman that this thread is moving
+	 * @param pacman The new pacman for this thread
+	 * */
 	public void setPacman(Pacman pacman) {
 		this.pacman = pacman;
 	}
