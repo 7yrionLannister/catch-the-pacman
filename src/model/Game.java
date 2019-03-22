@@ -13,14 +13,28 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Game {
+	/**The constant specifies the path to save the hall of fame information
+	 * */
 	public final static String SER_HALL_OF_FAME = "data/hall.got";
+	/**The constant specifies the path to save a game
+	 * */
 	public final static String SER_PATH = "data/game.got";
+	/**The constant specifies the path where the information about the level 0  is allowed
+	 * */
 	public final static String EASY_LEVEL_PATH = "data/level0.txt";
+	/**The constant specifies the path where the information about the level 1 is allowed
+	 * */
 	public final static String MEDIUM_LEVEL_PATH = "data/level1.txt";
+	/**The constant specifies the path where the information about the level 2 is allowed
+	 * */
 	public final static String HARD_LEVEL_PATH = "data/level2.txt";
 
+	/**The list represents all the pacmans that the player has to catch in the corresponding level
+	 * */
 	private ArrayList<Pacman> pacmans;
 
+	/**The constructor allows to initialize a new game , either from a level or a pre-saved game
+	 * */
 	public Game(String archivePath) throws ClassNotFoundException, IOException {
 		File file = new File(archivePath); 
 		if(!archivePath.equals(SER_PATH)) {
@@ -35,7 +49,9 @@ public class Game {
 			}
 		}
 	}
-
+	
+	/**The method allows to save the current state of the game
+	 * */
 	public void save() throws IOException {
 		File file = new File(SER_PATH);
 		FileOutputStream fos = new FileOutputStream(file);
@@ -45,6 +61,8 @@ public class Game {
 		fos.close();
 	}
 
+	/**The method allows to start the game in the same state that was saved previously
+	 * */
 	private void load() throws IOException, ClassNotFoundException {
 		File file = new File(SER_PATH);
 		FileInputStream fis = new FileInputStream(file);
@@ -53,7 +71,9 @@ public class Game {
 		ois.close();
 		fis.close();
 	}
-
+	
+	/**The method allows to start a new game with pacmans that are
+	 * */
 	private void startNewGameFromScratch(File level) throws IOException {
 		pacmans = new ArrayList<>();
 		FileReader fr = new FileReader(level);
@@ -141,7 +161,6 @@ public class Game {
 				}
 			}
 		});
-		System.out.println(hallMembers.size());
 		if(hallMembers.size() == 11) {
 			hallMembers.remove(10);
 		}

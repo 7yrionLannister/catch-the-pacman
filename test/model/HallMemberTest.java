@@ -7,7 +7,8 @@ import java.security.SecureRandom;
 
 import org.junit.jupiter.api.Test;
 
-class HallMemberTest {
+
+public class HallMemberTest {
 	private SecureRandom sr;
 	private HallMember hm;
 	

@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 
 import org.junit.jupiter.api.Test;
 
-class PacmanTest {
+public class PacmanTest {
 
 	private Pacman pacman;
 	private SecureRandom sr;

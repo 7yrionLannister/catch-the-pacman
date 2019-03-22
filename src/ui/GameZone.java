@@ -205,6 +205,7 @@ public class GameZone extends Canvas {
 							}
 						}
 						if(win) {
+							pauseGame();
 							Alert alert = new Alert(AlertType.INFORMATION, "Your score: " + score);
 							alert.setTitle("You won!!!");
 							alert.setContentText("Your score: " + score);
